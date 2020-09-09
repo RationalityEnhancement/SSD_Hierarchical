@@ -1,0 +1,33 @@
+[
+{"pid":1,"actions":["left","left","right"],"clicks":[1,4,7],"stateRewards":[0, 48, 1, 4, 24, -1, -8, -48, 2, 4]},
+{"pid":1,"actions":["left","left","right"],"clicks":[9,3,2,1,4],"stateRewards":[0, 48, 1, 4, 24, -1, -8, 8, 2, 48]},
+
+    {"pid":1,"actions":    ["center","left","center"]      ,"clicks":[8, 5, 2] ,"stateRewards":   [0, 4, 24, 1, 4, -24, 1, -4, 48, 2]        },   
+    
+    {"pid":1,"actions":     ["center","right","right"]      ,"clicks":[8, 5, 2] ,"stateRewards":  [0, -4, 24, -2, -4, -48, -2, -8, -24, -1]  },       
+  
+    {"pid":1,"actions":  ["right","left","center"]       ,"clicks":[8, 5, 2] ,"stateRewards":   [0, -4, -48, 1, -4, -24, -1, -8, 24, -1]    },   
+    
+    {"pid":1,"actions":     ["center","center","left"]      ,"clicks":[8, 5, 2] ,"stateRewards":    [0, 4, 24, -1, 4, 48, 2, -8, -48, -2]      },   
+   
+    {"pid":1,"actions":     ["center","center","right"]      ,"clicks":[8, 5, 2] ,"stateRewards":  [0, 8, 24, 2, 4, 24, -2, 8, -48, -1]            },
+   
+    {"pid":1,"actions":     ["center","left","center"]       ,"clicks":[8, 5, 2] ,"stateRewards":    [0, -8, 48, -2, 8, -24, 1, 8, 24, -1]          },
+   
+    {"pid":1,"actions":  ["left","left","right"]    ,"clicks":[8, 5, 2] ,"stateRewards":  [0, 8, -24, 2, -8, -48, 1, 4, -24, -1]        },
+
+    {"pid":1,"actions":     ["center","right","right"]      ,"clicks":[8, 5, 2] ,"stateRewards":  [0, -4, 24, -2, -4, -48, -2, -8, -24, -1]  },       
+  
+    {"pid":1,"actions":  ["right","left","center"]       ,"clicks":[8, 5, 2] ,"stateRewards":   [0, -4, -48, 1, -4, -24, -1, -8, 24, -1]    },   
+   
+    {"pid":1,"actions":   ["center","center","left"]       ,"clicks":[8, 5, 2] ,"stateRewards":  [0, -8, 48, -1, 4, 48, 1, 4, -48, -1] }
+            
+]
+
+
+
+
+
+
+
+

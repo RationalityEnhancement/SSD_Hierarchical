@@ -1,0 +1,18 @@
+[
+{"pid":1,"actions":["left","left","right"],"clicks":[1,4,7],"stateRewards":[0, 48, 1, 4, 24, -1, -8, -48, 2, 4]},
+{"pid":1,"actions":["left","left","right"],"clicks":[9,3,2,1,4],"stateRewards":[0, 48, 1, 4, 24, -1, -8, 8, 2, 48]},
+
+{"pid":1,"actions":["right","center","center"],"clicks":[6, 9, 3] ,"stateRewards": [0,-1, -8, 24, -1, -4, -24, -2, 4, -24]},
+{"pid":1,"actions":["right","left","right"],"clicks":[6, 2, 9, 5] ,"stateRewards":[0,-2, -48, -4, 1, -48, -4, 2, 4, 24]},
+
+{"pid":1,"actions":["left","right","right"],"clicks":[6, 9, 3] ,"stateRewards":[0,-8, 2, -48, 8, -1, 48, 2, 4, 24]},
+
+{"pid":1,"actions":["center","center","left"],"clicks":[6, 5, 2, 9] ,"stateRewards":[0,4, 48, -1, 4, 24, -2, -2, -4, -24]},
+
+{"pid":1,"actions":["left","left","left"],"clicks":[6, 9, 8, 7, 3] ,"stateRewards":[0,1, -4, -24, -1, 8, -48, 48, 4, -2]},
+
+{"pid":1,"actions":["center","right","left"],"clicks":[6, 9, 3, 8] ,"stateRewards":[0,1, 4, -24, 1, 8, 24, -8, -24, -1]},
+
+{"pid":1,"actions":["center","left","right"],"clicks":[6, 9, 3] ,"stateRewards":[0,-2, 4, -48, -2, -8, -24, -4, -2, 48]},
+{"pid":1,"actions":["left","right","right"],"clicks":[9, 6, 3, 8],"stateRewards": [0,1, 8, -24, -1, 8, 24, -2, -48, 4]}
+]

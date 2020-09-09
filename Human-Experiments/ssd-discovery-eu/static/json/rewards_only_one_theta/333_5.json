@@ -1,0 +1,43 @@
+[
+{"trial_id": 1, "stateRewards":[0, 24, 4, 1, 24, -4, 1, -1, 8, 48]},
+{"trial_id": 2, "stateRewards": [0, -4, 2, 48, 24, -4, 2,  1,  4, 24]},
+{"trial_id": 3, "stateRewards":[0, 1, 4, 24, 1, -4, 24, -4, 2, 48]},
+{"trial_id": 4, "stateRewards":[0, 4, 24, 1, 4, -24, 1, -4, 48, 2]},
+{"trial_id": 5, "stateRewards":[0, 24, 4, 1, 24, -4, 1, -1, 48, 8]},
+
+{"trial_id": 6, "stateRewards": [0,-48,  2, 4,  24, -4, 2,  24,  4, -1]},
+{"trial_id": 7, "stateRewards": [0, 1,  2, -24,  2, -4, 48,  24,  4, -1]},
+
+
+{"trial_id":8,"stateRewards":[0,8, 2, -24, -4, 2, -24, 48, 8, -2]},
+{"trial_id":9,"stateRewards": [0,4, 1, -24, 8, -1, -48, -24, -4, -1]},
+{"trial_id":10,"stateRewards":[0,4, -1, 48, -8, 2, 24, -24, -8, 2]},
+{"trial_id":11,"stateRewards":[0,4, -1, -24, 8, -2, -48, 24, 8, -2]},
+{"trial_id":12,"stateRewards": [0,4, 1, -48, -8, 1, 48, -24, 8, 1]},
+
+  {"trial_id":13,"stateRewards": [0,-4, -2, -48, 8, 1, -24, 48, 8, -1]},
+ {"trial_id":14,"stateRewards":  [0,-8, -2, 48, -4, -2, 48, -24, 8, -1]},
+ {"trial_id":15,"stateRewards":  [0,-8, -1, 48, -8, 1, -48, -24, -8, -1]},
+ {"trial_id":16,"stateRewards":  [0,-8, 2, -24, 4, 2, 24, 48, 8, 2]},
+ {"trial_id":17,"stateRewards":  [0,-8, 2, 24, -8, -1, -48, -24, -8, -2]},
+{"trial_id":18,"stateRewards":  [0,-8, -2, 24, -8, 1, 24, 48, -8, 1]},
+{"trial_id":19,"stateRewards":   [0,4, -1, 24, -8, 2, 24, -24, 8, -2]},
+{"trial_id":20,"stateRewards":[0,4, 1, 24, -4, -1, -24, 24, -8, 2]},
+{"trial_id":21,"stateRewards": [0,-8, -2, 48, 4, 1, 48, 24, -4, 2]},
+{"trial_id":22,"stateRewards": [0,-8, 2, 48, 8, 1, -48, -48, 4, 1]}
+
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+

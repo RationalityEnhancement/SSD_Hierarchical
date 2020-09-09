@@ -1,0 +1,14 @@
+algo_type: DQN
+batch_size: 32
+endE: 0.1
+gamma: 0.99
+h_size: 256
+load_model: false
+max_hr: 10
+n_env: '100'
+num_episodes: 100000
+optimiser: Adam
+rseed: 100
+startE: 1
+tau: 0.001
+update_freq: 2

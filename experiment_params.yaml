@@ -1,0 +1,11 @@
+batch_size: 32 # How many experiences to use for each training step.
+update_freq: 2 # How often to perform a training step.
+gamma: .99  # Discount factor on the target Q-values
+startE: 1  # Starting chance of random action
+endE: 0.1  # Final chance of random action
+num_episodes: 100000 # How many episodes of game environment to train network with.
+load_model: False  # Whether to load a saved model.
+h_size: 256 # The size of the final convolutional layer before splitting it into Advantage and Value streams.
+tau: 0.001  # Rate to update target network toward primary network
+max_hr: 10
+

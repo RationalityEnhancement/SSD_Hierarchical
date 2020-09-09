@@ -1,0 +1,1 @@
+Logging to /lustre/home/sconsul/Cluster4/Experiments_2_36/results_dqn/DQN_Adam/rs_100
