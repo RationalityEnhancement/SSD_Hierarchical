@@ -1,6 +1,6 @@
 # Leveraging Reinforcement Learning to Discover Algorithms for Computationally Efficient Hierarchical Planning
 
-This repository is the official implementation of [Leveraging Reinforcement Learning to Discover Algorithms for Computationally Efficient Hierarchical Planning](XXX). 
+This repository is the official implementation of [Leveraging Reinforcement Learning to Discover Algorithms for Computationally Efficient Hierarchical Planning](Paper/Paper.pdf). 
 
 
 ## Requirements
