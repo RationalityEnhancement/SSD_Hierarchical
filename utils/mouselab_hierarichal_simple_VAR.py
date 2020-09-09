@@ -402,17 +402,9 @@ class MouselabEnv(gym.Env):
             init = initval
         # Get number of goals
         goals = []
-        c = 0
-        for _, n in enumerate(tree):
-            if n != []:
-                prev = n
-            if n == []:
-                if len(prev) != 1:
-                    goals.append([prev[c]])
-                    c += 1
-                else:
-                    goals.append(prev)
-                    c = 0
+        for i,el in enumerate(tree):
+            if len(el) == 0:
+                goals.append(i)
 
         def option_add(opt, opt_temp):
             option = []
