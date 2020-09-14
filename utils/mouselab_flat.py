@@ -275,9 +275,10 @@ class MouselabEnv(gym.Env):
         goals = []
         for i,el in enumerate(tree):
             if len(el) == 0:
-                goals.append(i)
+                goals.append([i])
         # print("Goals = {}".format(goals))
 
+        # Option set code is unused in this mouselab
         def option_add(opt, opt_temp):
             option = []
             for _, node in enumerate(opt_temp):

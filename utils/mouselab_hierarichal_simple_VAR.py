@@ -400,68 +400,34 @@ class MouselabEnv(gym.Env):
 
         if initval is not None:
             init = initval
-        # Get number of goals
+            
+        # Goals are the leaf nodes
         goals = []
         for i,el in enumerate(tree):
             if len(el) == 0:
-                goals.append(i)
+                goals.append([i])
 
-        def option_add(opt, opt_temp):
-            option = []
-            for _, node in enumerate(opt_temp):
-                if type(node) == int:
-                    option.append(node)
-                else:
-                    option.extend(node)
-            woduplicates = list(set(option))
-            opt.append(woduplicates)
-            return opt
+        # Recursively gather the parents of a given node in the tree
+        def get_parents(tree, state):
+            parents = []
+            if state != 0:
+                for i, el in enumerate(tree):
+                    if state in el:
+                        # Index = node
+                        parents.append(i)
+                rec_parents = []
+                for p in parents:
+                    rec_parents += get_parents(tree, p)
+                return parents + rec_parents
+            return []
 
         if option_set is None:
-            g_c = 0
-            opt_no = 0
-            c = 1
-            goal = goals[g_c]
-            opt_temp = []
             opt = []
-            for j, t in enumerate(tree[0]):
-                # For a particular goal
-                lst = tree[c:]
-                try:
-                    max_index = len(lst) - lst[::-1].index(goal) - 1
-                except:
-                    max_index = -1  # No more index left
-                if max_index == 0:  # Final nodes belong to last option
-                    opt_temp.append(lst[0])
-                    c += 1
-                    lst = tree[c:]
-                if max_index == -1 or max_index == 0:  # Update the option list
-                    g_c += 1
-                    if opt_temp != []:
-                        opt = option_add(opt, opt_temp)
-                        opt_no += 1
-                    opt_temp = []
-                    if g_c >= no_options:
-                        g_c = no_options - 1
-                    goal = goals[g_c]
-
-                opt_temp.append(t)
-
-                for i, tt in enumerate(lst):
-                    opt_temp.append(tt)
-                    if tt == goal:
-                        c += i + 1
-                        break
-                if opt_no == no_options - 1:  # Nodes of last goal only
-                    if j != len(tree[0]) - 1:
-                        add_nodes = []
-                        for _, rt in enumerate(tree[0][j:]):
-                            add_nodes.append(rt)
-                    else:
-                        add_nodes = [t]
-                    lst = add_nodes + lst
-                    opt = option_add(opt, lst)
-                    break
+            for i, g in enumerate(goals):
+                parents = get_parents(tree, g[0])
+                # Unique parents excluding the root node
+                option = np.unique(np.array(parents))[1:]
+                opt.append(option.tolist())
         else:
             opt = option_set
         return cls(tuple(tree), init, no_options, tuple(goals), tuple(opt), env_type, **kwargs)
