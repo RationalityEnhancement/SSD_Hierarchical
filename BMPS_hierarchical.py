@@ -32,15 +32,15 @@ if __name__ == '__main__':
     cwd = os.getcwd()
     cwd += '/' + str(NO_OPTION) + '_' + str(NO_OPTION * 18)
 
-    TREE_1 = np.load(cwd + '/tree.npy')
-    DISTS = np.load(cwd + '/dists.npy')
-    DIST1 = np.load(cwd + '/dist.npy')
+    TREE_1 = np.load(cwd + '/tree.npy').tolist()
+    DISTS = np.load(cwd + '/dists.npy').tolist()
+    DIST1 = np.load(cwd + '/dist.npy').tolist()
 
     TREE = []
     for t in TREE_1:
         TREE.append(t)
 
-    OPTION_SET = np.load(cwd + '/option_set.npy')
+    OPTION_SET = np.load(cwd + '/option_set.npy').tolist()
     BRANCH_COST = 1
     SWITCH_COST = 1
     SEED = 0
@@ -70,10 +70,6 @@ if __name__ == '__main__':
         global node_types1
         sigma_val = {'V1': 5, 'V2': 10, 'V3': 20, 'V4': 40, 'G1': 100, 'G2': 120, 'G3': 140, 'G4': 160, 'G5': 180}
         return Normal(mu=0, sigma=sigma_val[node_types1[i]])
-
-    node_types = []
-    for tpe in DIST:
-        node_types.append(tpe)
 
 
     def blackboxfunc_low(W):
@@ -397,11 +393,11 @@ if __name__ == '__main__':
          {'name': 'w2', 'type': 'continuous', 'domain': (0,1)},
          {'name': 'w4', 'type': 'continuous', 'domain': (1,18)}]
 
-         constraints = [{'name': 'part_1', 'constraint': 'x[:,0] + x[:,1] - 1'}]
+        constraints = [{'name': 'part_1', 'constraint': 'x[:,0] + x[:,1] - 1'}]
 
-         feasible_region = GPyOpt.Design_space(space = space, constraints = constraints)
+        feasible_region = GPyOpt.Design_space(space = space, constraints = constraints)
 
-         from numpy.random import seed # fixed seed
+        from numpy.random import seed # fixed seed
         seed(123456)
 
         initial_design = GPyOpt.experiment_design.initial_design('random', feasible_region, 10)
