@@ -365,7 +365,7 @@ if __name__ == '__main__':
                     # exp_return += rew
                     possible_high_level_actions.remove(high_action_taken)
         
-            exp_return = sum(env.ground_truth[env.actual_path(env.low_state)] + env.cost* (len(low_actions) - 1) + env.switch_cost*(len(high_actions) -1))
+            exp_return = sum(env.ground_truth[env.actual_path(env.low_state)]) + env.cost* (len(low_actions) - 1) + env.switch_cost*(len(high_actions) -1)
             cumreturn += exp_return
             clicks = (len(high_actions) - 1) + (len(low_actions) - 1)
             reward_per_click += (exp_return / clicks)
