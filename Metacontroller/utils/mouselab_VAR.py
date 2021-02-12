@@ -289,14 +289,14 @@ def reduce_rec(tree):
         for i in range(len(tree)):
             node = tree[i]
             for child in node: 
-                if child in parent_counter.keys():
+                if child in parent_counter.keys():  # checking if child has more than 1 parent
                     parent_counter[child] += 1
                 else:
                     parent_counter[child] = 1
-            if len(node) == 1:
+            if len(node) == 1:  # parent has only child
                 potential_parents.append(i)
         for parent in potential_parents:
-            child = tree[parent][0]
+            child = tree[parent][0]  # tree[parent] will always be of len 1 because of potential_parent condition
             if parent_counter[child] == 1: 
                 return True, parent, child
         return False, None, None
@@ -312,7 +312,7 @@ def reduce_rec(tree):
             node = tree[i]
             # Store parents of each node for later comparison
             for child in node:
-                parent_mapping[child] = parent_mapping[child] + [node]
+                parent_mapping[child] = parent_mapping[child] + [i]
             # Check all previous nodes for a potential pair with the current node
             # Condition: Both have the same single child
             if len(node) == 1:
