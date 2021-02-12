@@ -245,6 +245,7 @@ class MouselabMeta(MouselabVar):
 
 class MouselabHigh(MouselabVar):
     """ Wrapper for goal MDPs that optimizes action features by setting VPI action to 0 instead of computing it.
+        (actuality VPI_action = myopic_VOC, but it's not used in this formulation)
     """
 
     def __init__(self, TREE, INIT, ground_truth, cost, simple_cost, high_actions):
@@ -253,13 +254,13 @@ class MouselabHigh(MouselabVar):
     
     # Discretize before calculating features
     def action_features(self, action, bins=4, state=None):
-        """Returns the low action features used for BMPS excluding vpi action
+        """Returns the high action features used for BMPS excluding vpi action
 
         Arguments:
-            action: low level action for computation
+            action: high level action for computation
             option: option for which computation
             bins: number of bins for discretization
-            state: low state for computation
+            state: high state for computation
         """
         state = state if state is not None else self._state
         state_disc = self.discretize(state, bins)
@@ -301,164 +302,6 @@ class MouselabHigh(MouselabVar):
                 self.vpi(state_disc),
                 self.expected_term_reward(state)
             ])
-
-def reduce_rec(tree, goal_mapping={}):
-    """ Recursively reduces the tree by applying one of two operations: Adding parent and child or multiplying two children together.
-
-    Args:
-        tree ([[int]]): Tree structure.
-    
-    Returns: 
-        operations ([(str, int, int)]): Applied operations
-        tree([[int]]): Reduced tree.
-    """
-    def find_add_pair(tree, goal_states):
-        # Conditions: 
-        # Parent can not have other children
-        # Child can not have other parents
-        parent_counter = {0: 0}
-        potential_parents = []
-        for i in range(1, len(tree)): # Excludes root
-            node = tree[i]
-            for child in node: 
-                if child in parent_counter.keys():
-                    parent_counter[child] += 1
-                else:
-                    parent_counter[child] = 1
-            if len(node) == 1:
-                potential_parents.append(i)
-        for parent in potential_parents:
-            child = tree[parent][0]
-            if parent_counter[child] == 1: 
-                if (child not in goal_states) or (parent not in goal_states): # Don't add 2 goal states
-                    return True, parent, child
-        return False, None, None
-
-    def find_reduce_pair(tree, goal_states):
-        # Conditions:
-        # Pair has a single, identical child
-        # Pair has a single, identical parent
-        parent_mapping = {i:[] for i in range(len(tree))}
-        potential_pairs = []
-        # Find pair candidates with identical child
-        for i in range(1, len(tree)): #Excludes root
-            node = tree[i]
-            # Store parents of each node for later comparison
-            for child in node:
-                parent_mapping[child] = parent_mapping[child] + [node]
-            # Check all previous nodes for a potential pair with the current node
-            # Condition: Both have the same single child
-            if len(node) == 1:
-                for j in range(i):
-                    if len(tree[j]) == 1 and (tree[j] == node):
-                        potential_pairs.append((j, i))
-        for pair in potential_pairs:
-            a, b = pair
-            parents_a = parent_mapping[a]
-            parents_b = parent_mapping[b]
-            # Check if both nodes in the pair have the same single parent
-            if (len(parents_a) == len(parents_b) == 1) and (parents_a == parents_b):
-                if (a not in goal_states) or (b not in goal_states): # Don't combine two goal states
-                    return True, a, b
-        # Alternative: Find pair with same parent and no children
-        for i in range(len(tree)):
-            if len(tree[i]) == 0:
-                for j in range(i+1, len(tree)):
-                    if len(tree[j]) == 0:
-                        parents_a = parent_mapping[i]
-                        parents_b = parent_mapping[j]
-                        if (len(parents_a) == len(parents_b) == 1) and (parents_a == parents_b):
-                            if (i not in goal_states) or (j not in goal_states): # Don't combine two goal states
-                                return True, i, j
-        return False, None, None
-
-    def add_pair(tree, a, b, goal_mapping):
-        # Always remove the child
-        assert b in tree[a]
-        # Copy tree and remove node b
-        new_tree = [tree[i] for i in range(len(tree))]
-        # Replace a's children with b's children
-        new_tree[a] = tree[b]
-        new_tree.pop(b)
-        # All states greater than a/b are now one index lower - adjust edges
-        node_value = max(a, b)
-        for i in range(len(new_tree)):
-            node = new_tree[i]
-            new_tree[i] = [child if child < node_value else child - 1 for child in node]
-        new_goal_map = {g:(v if v < node_value else v-1) for g, v in goal_mapping.items()}
-        return new_tree, new_goal_map
-
-    def reduce_pair(tree, a, b, goal_mapping):
-        # Always remove the higher index
-        if a>b:
-            a, b = b, a
-        # Copy tree and remove node b
-        new_tree = [tree[i] for i in range(len(tree)) if i != b]
-        # Edit edges
-        for i in range(len(new_tree)):
-            # Remove b from parent's children
-            if b in new_tree[i]:
-                new_tree[i] = [j for j in new_tree[i] if j!=b]
-            # All states greater than b are now one index lower - adjust edges
-            new_tree[i] = [child if child < b else child - 1 for child in new_tree[i]]
-            # Remove duplicates
-            new_tree[i] = list(set(new_tree[i]))
-        new_goal_map = {g:(v if v < b else v-1) for g, v in goal_mapping.items()}
-        return new_tree, new_goal_map
-
-    new_tree = [x for x in tree]
-    #ew_state = [node if hasattr(node, "sample") else Categorical([node]) for node in state]
-
-    operations = []
-
-    done = False
-    while not done:
-        num_reductions = 0
-        # Priority 1: Merge direct parent child connections through add
-        done_add = False
-        while not done_add:
-            found, a, b = find_add_pair(new_tree, goal_mapping.values())
-            if found: 
-                new_tree, goal_mapping = add_pair(new_tree, a, b, goal_mapping)
-                operations.append(tuple(("add", a, b)))
-                num_reductions += 1
-            else: 
-                done_add = True
-        # Priority 2: Merge neighbors with the same parent and child
-        done_mul = False
-        while not done_mul:
-            found, a, b = find_reduce_pair(new_tree, goal_mapping.values())
-            if found: 
-                new_tree, goal_mapping = reduce_pair(new_tree, a, b, goal_mapping)
-                operations.append(tuple(("mul", a, b)))
-                num_reductions += 1
-            else: 
-                done_mul = True
-        # If no add or mul pair is found the tree is minimal
-        if num_reductions == 0:
-            done = True
-    return operations, new_tree, goal_mapping
-
-def compute_goal_state(state, operations):
-    def reduce_add(state, i, j):
-        new_state = [state[i] for i in range(len(state)) if i is not j]
-        new_state[i] = new_state[i] + state[j]
-        return new_state
-
-    def reduce_mul(state, i, j):
-        new_state = [state[i] for i in range(len(state)) if i is not j]
-        new_state[i] = cross([state[i], state[j]], max)
-        return new_state
-    
-    for i in range(len(operations)):
-        op, a, b = operations[i]
-        if op == "add":
-            state = reduce_add(state, a, b)
-        elif op == "mul":
-            state = reduce_mul(state, a, b)
-        else:
-            assert False
-    return state
 
 def shrink_categorical(cat, n=4):
     '''
