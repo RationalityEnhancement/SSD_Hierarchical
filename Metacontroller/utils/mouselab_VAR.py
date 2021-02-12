@@ -219,12 +219,12 @@ def exact_node_value_after_observe(state, operations):
         result (Categorical): Categorical node value of the final tree node. 
     """
     def reduce_add(state, i, j):
-        new_state = [state[i] for i in range(len(state)) if i is not j]
+        new_state = [state[k] for k in range(len(state)) if k is not j]
         new_state[i] = new_state[i] + state[j]
         return new_state
 
     def reduce_mul(state, i, j):
-        new_state = [state[i] for i in range(len(state)) if i is not j]
+        new_state = [state[k] for k in range(len(state)) if k is not j]
         new_state[i] = cross([state[i], state[j]], max)
         return new_state
 
@@ -248,7 +248,7 @@ def exact_node_value_after_observe(state, operations):
         elif op == "mul":
             state = reduce_mul(state, a, b)
         elif op == "split":
-            # a = split, b = num parents
+            # a = split node, b = num parents
             probs, obs_vals = split_obs(state, a, b)
             states = []
             # Solve partial trees recursively
@@ -328,7 +328,7 @@ def reduce_rec(tree):
                 return True, a, b
         # Alternative: Find pair with same parent and no children
         for i in range(len(tree)):
-            if len(tree[i]) == 0:
+            if len(tree[i]) == 0:  # no children
                 for j in range(i+1, len(tree)):
                     if len(tree[j]) == 0:
                         parents_a = parent_mapping[i]
@@ -365,12 +365,11 @@ def reduce_rec(tree):
                 new_tree[i] = [j for j in new_tree[i] if j!=b]
             # All states greater than b are now one index lower - adjust edges
             new_tree[i] = [child if child < b else child - 1 for child in new_tree[i]]
-            # Remove duplicates
+            # Reorders the list to be ascending order. There won't be any  duplicates
             new_tree[i] = list(set(new_tree[i]))
         return new_tree
 
     new_tree = [x for x in tree]
-    #ew_state = [node if hasattr(node, "sample") else Categorical([node]) for node in state]
 
     operations = []
 
@@ -414,6 +413,11 @@ def compute_operations(tree, operations = []):
         operations ([tuple]): List of tuples containing the operations used and two additional parameters specifying the affected nodes.
     """
     def find_split_node(tree):
+        '''
+        a split node is a node in a tree which cannot be reduced by simple add-red steps. It is a leaf node which has >1 parent
+        :param tree:
+        :return:
+        '''
         leafs = [i for i in range(len(tree)) if tree[i] == []]
         for leaf in leafs:
             num_parents = 0
@@ -425,6 +429,12 @@ def compute_operations(tree, operations = []):
         return None
 
     def split_tree(tree, x):
+        '''
+        To reslolve split node 'x' issue: add a new child node to the parent nodes, leaving 1 with the original spllit node
+        :param tree:
+        :param x:
+        :return:
+        '''
         tree = [node for node in tree]
         assert tree[x] == [] # Only leaf nodes work
         num_parents = 0 
@@ -433,11 +443,10 @@ def compute_operations(tree, operations = []):
                 # If more than one parent - add new node as child for other parent
                 if num_parents != 0: 
                     tree[i] = [node for node in tree[i] if x != node]
-                    tree[i].append(len(tree) - 1 + num_parents)
+                    tree[i].append(len(tree))
+                    tree.append([])  # New children for additional parent nodes
                 num_parents += 1
-        # New children for additional parent nodes
-        for i in range(num_parents - 1):
-            tree.append([])
+
         return tree, num_parents
 
     # Find mul - add operations
