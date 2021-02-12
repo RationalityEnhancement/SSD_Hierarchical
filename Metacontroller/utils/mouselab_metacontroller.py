@@ -240,9 +240,7 @@ class MouselabMeta(MouselabVar):
             sub_state.append(alternative)
             sub_to_real[new_node] = None
 
-            sub_mdp = MouselabVar(sub_tree, sub_state, ground_truth=sub_ground_truth, cost=self.LOW_COST, simple_cost=self.simple_cost)
-        else:
-            sub_mdp = MouselabVar(sub_tree, sub_state, ground_truth=sub_ground_truth, cost=self.LOW_COST, simple_cost=self.simple_cost)
+        sub_mdp = MouselabVar(sub_tree, sub_state, ground_truth=sub_ground_truth, cost=self.LOW_COST, simple_cost=self.simple_cost)
         return sub_mdp, sub_to_real, real_to_sub
 
 class MouselabHigh(MouselabVar):
@@ -463,6 +461,12 @@ def compute_goal_state(state, operations):
     return state
 
 def shrink_categorical(cat, n=4):
+    '''
+    Reduces the categorical distribution to distribution of size n using k-means clustering
+    :param cat: categorical distribution
+    :param n: number of bins/clusters to be reduced to
+    :return:
+    '''
     if (not hasattr(cat, "sample")) or (len(cat.vals) < n):
         return cat
     clusters, centroids = kmeans1d.cluster(cat.vals, n)
