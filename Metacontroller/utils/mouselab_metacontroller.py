@@ -37,7 +37,7 @@ class MouselabMeta(MouselabVar):
         self.LOW_COST = low_cost
 
 
-    def get_max_path_reward(self, goal):
+    def get_max_path_reward(self, goal,f=max):
         """
         Get the maximum expected reward on a path to the given goal.
         """
@@ -56,29 +56,19 @@ class MouselabMeta(MouselabVar):
                     else:
                         path_reward += reward
             path_rewards.append(path_reward)
-        return max(path_rewards)
+        return f(path_rewards)
 
     def get_max_path(self, goal, include=False):
         """
         Get the maximum expected reward on a path to the given goal.
         """
-
-        path_rewards = []
-        for path in self.goal_paths[goal]:
-            path_reward = 0
-            for node in path:
-                # Only consider nodes up to the goal
-                if not include and (node == goal):
-                    break
-                else:
-                    reward = self._state[node]
-                    if hasattr(reward, "sample"):
-                        path_reward += reward.expectation()
-                    else:
-                        path_reward += reward
-                    if node == goal:
-                        break
-            path_rewards.append(path_reward)
+        path_rewards = self.get_max_path_reward(goal, np.array)
+        if not include:
+            reward = self._state[goal]
+            if hasattr(reward, "sample"):
+                path_rewards -= reward.expectation()
+            else:
+                path_rewards -= reward
         best_path = np.argmax(path_rewards)
         return self.goal_paths[goal][best_path]
 
