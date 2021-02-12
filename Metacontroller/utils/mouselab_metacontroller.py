@@ -258,7 +258,6 @@ class MouselabHigh(MouselabVar):
 
         Arguments:
             action: high level action for computation
-            option: option for which computation
             bins: number of bins for discretization
             state: high state for computation
         """

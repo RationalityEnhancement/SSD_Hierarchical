@@ -91,7 +91,6 @@ class MouselabVar(MouselabEnv):
 
         Arguments:
             action: low level action for computation
-            option: option for which computation
             bins: number of bins for discretization
             state: low state for computation
         """
