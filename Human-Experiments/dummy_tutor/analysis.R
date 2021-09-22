@@ -1,6 +1,5 @@
 library(nparLD)
 
-
 # Read data
 dat = read.csv("./main_excluded.csv")
 df <- dat[,c("Participant", "Condition", "TrialId", "ExpectedScore", "NumClicks", "Score", "ClickAgreement", "GoalAgreement", "SubgoalAgreement", "TermAgreement", "GoalTermAgreement", "SubgoalTermAgreement")]
@@ -11,7 +10,7 @@ df$Condition <- as.factor(df$Condition)
 
 runAnova <- function(df){
   # This one doesn't work for some conditions
-  y <- df$GoalAgreement
+  y <- df$TermAgreement
   time <- df$TrialId
   group <- df$Condition
   subject <- df$Participant

@@ -1,10 +1,9 @@
-library(ez)
 library(nparLD)
-
 
 # Read data
 dat = read.csv("./main_excluded.csv")
-df <- dat[,c("Participant", "Condition", "TrialId", "ExpectedScore", "NumClicks", "Score")]
+df <- dat[,c("Participant", "Condition", "TrialId", "ExpectedScore", "NumClicks", "Score", "ClickAgreement", "GoalAgreement", "SubgoalAgreement", "TermAgreement", "GoalTermAgreement", "SubgoalTermAgreement")]
+
 
 df$Participant <- as.factor(df$Participant)
 df$TrialId <- as.factor(df$TrialId)
@@ -12,7 +11,7 @@ df$Condition <- as.factor(df$Condition)
 
 runAnova <- function(df){
   # This one doesn't work for some conditions
-  y <- df$ExpectedScore
+  y <- df$GoalAgreement
   time <- df$TrialId
   group <- df$Condition
   subject <- df$Participant
@@ -25,6 +24,7 @@ runAnova <- function(df){
   print(f1$ANOVA.test.mod.Box)
   print("F1 pairwise")
   print(f1$pair.comparison)
+  print(f1$pattern.pair.comparison)
 }
 
 runAnova(df)
